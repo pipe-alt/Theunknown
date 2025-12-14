@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PROJECT: UNKNOWN | Official Site</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nosifer&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- CORE VARIABLES --- */
+        :root {
+            --primary-red: #ff003c;
+            --dim-red: #590015;
+            --bg-black: #050505;
+            --text-mono: 'Share Tech Mono', monospace;
+            --text-horror: 'Nosifer', cursive;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-black);
+            color: #e0e0e0;
+            font-family: var(--text-mono);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* --- CRT FX LAYERS --- */
+        .scanlines {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.2));
+            background-size: 100% 4px; pointer-events: none; z-index: 1000;
+            animation: scrollLines 10s linear infinite;
+        }
+        .vignette {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle, rgba(0,0,0,0) 60%, rgba(0,0,0,0.9) 100%);
+            pointer-events: none; z-index: 999;
+        }
+
+        /* --- NAVIGATION --- */
+        nav {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 5%; position: fixed; width: 100%;
+            background: rgba(5, 5, 5, 0.95); z-index: 100;
+            border-bottom: 1px solid #333; backdrop-filter: blur(5px);
+        }
+        
+        .logo { font-family: var(--text-horror); color: var(--primary-red); font-size: 1.5rem; text-shadow: 2px 2px 0px #000; }
+        
+        .nav-right { display: flex; align-items: center; gap: 30px; }
+        
+        .nav-links a { 
+            color: #fff; text-decoration: none; text-transform: uppercase; 
+            font-size: 0.9rem; transition: color 0.3s; 
+        }
+        .nav-links a:hover { color: var(--primary-red); text-shadow: 0 0 8px var(--primary-red); }
+
+        /* Language Toggle Button Style */
+        .lang-toggle {
+            background: transparent; border: 1px solid #444; color: #fff;
+            font-family: var(--text-mono); padding: 5px 10px; cursor: pointer;
+            text-transform: uppercase; font-size: 0.8rem; transition: all 0.3s;
+        }
+        .lang-toggle:hover { border-color: var(--primary-red); color: var(--primary-red); }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;
+            background: url('https://images.unsplash.com/photo-1518558997970-4ddc236affcd?q=80&w=2070&auto=format&fit=crop') no-repeat center center/cover;
+            position: relative; padding: 20px;
+        }
+        .hero::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); }
+        .hero-content { position: relative; z-index: 2; max-width: 800px; width: 100%; }
+        
+        h1 { font-family: var(--text-horror); font-size: clamp(2.5rem, 5vw, 4.5rem); color: #fff; margin-bottom: 10px; animation: glitch 2.5s infinite; }
+        p.tagline { font-size: clamp(1rem, 2vw, 1.2rem); letter-spacing: 2px; margin-bottom: 30px; color: #ccc; border-left: 3px solid var(--primary-red); padding-left: 15px; display: inline-block; }
+
+        /* --- BUTTONS --- */
+        .store-buttons-container { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 20px; }
+        .store-btn {
+            display: flex; align-items: center; justify-content: center; gap: 10px; padding: 15px 30px; min-width: 200px;
+            background: rgba(0,0,0,0.8); border: 1px solid #fff; color: #fff; text-decoration: none; text-transform: uppercase;
+            font-weight: bold; transition: all 0.3s ease; position: relative; overflow: hidden;
+        }
+        .store-btn:hover { transform: translateY(-3px); box-shadow: 0 0 15px var(--primary-red); border-color: var(--primary-red); background: var(--dim-red); }
+        .store-btn small { font-size: 0.6rem; opacity: 0.7; margin-bottom: 3px; display: block;}
+        .store-btn span { text-align: left; line-height: 1; }
+
+        /* --- SECTIONS --- */
+        .section { padding: 80px 10%; background-color: var(--bg-black); }
+        .section-title { font-size: 2rem; color: #fff; margin-bottom: 40px; border-bottom: 1px solid #333; display: inline-block; padding-bottom: 10px; }
+        .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
+        .card { background: #0f0f0f; border: 1px solid #222; padding: 20px; transition: transform 0.3s; }
+        .card:hover { border-color: var(--primary-red); }
+        .card h3 { color: var(--primary-red); margin-bottom: 10px; }
+
+        /* --- GALLERY --- */
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; }
+        .gallery-item { height: 200px; background-color: #222; background-size: cover; background-position: center; filter: grayscale(100%); transition: filter 0.3s; border: 1px solid #333; }
+        .gallery-item:hover { filter: grayscale(0%); border-color: var(--primary-red); }
+
+        /* --- FOOTER --- */
+        footer { padding: 40px; text-align: center; background: #000; border-top: 1px solid #222; font-size: 0.8rem; color: #666; }
+
+        /* --- MOBILE ADAPTATION --- */
+        @media (max-width: 768px) {
+            nav { flex-direction: column; padding: 15px; gap: 15px; }
+            .nav-right { flex-direction: column; gap: 15px; width: 100%; }
+            .nav-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; }
+            .section { padding: 60px 5%; }
+            .store-buttons-container { flex-direction: column; align-items: center; width: 100%; }
+            .store-btn { width: 100%; max-width: 350px; }
+            .lang-toggle { width: 100%; max-width: 200px; text-align: center; }
+        }
+
+        /* --- ANIMATION KEYFRAMES --- */
+        @keyframes scrollLines { 0% { background-position: 0 0; } 100% { background-position: 0 400px; } }
+        @keyframes glitch {
+            0% { text-shadow: 2px 0 0 red, -2px 0 0 blue; } 5% { text-shadow: 2px 0 0 red, -2px 0 0 blue; }
+            10% { text-shadow: none; } 15% { text-shadow: -2px 0 0 red, 2px 0 0 blue; } 20% { text-shadow: none; } 100% { text-shadow: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="scanlines"></div>
+    <div class="vignette"></div>
+
+    <nav>
+        <div class="logo">HOSTILE//SIGNAL</div>
+        
+        <div class="nav-right">
+            <div class="nav-links">
+                <a href="#about" data-lang="nav_story">Story</a>
+                <a href="#gallery" data-lang="nav_gallery">Evidence</a>
+                <a href="#download" data-lang="nav_get">Get Game</a>
+            </div>
+            
+            <button class="lang-toggle" onclick="toggleLanguage()" id="langBtn">
+                [ EN / ES ]
+            </button>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="hero-content">
+            <h1 data-lang="hero_title">DONT LOOK BACK</h1>
+            <p class="tagline" data-lang="hero_tagline">The frequency is calling. Will you answer?</p>
+            
+            <div class="store-buttons-container">
+                <a href="https://store.steampowered.com/app/YOUR_GAME_ID" class="store-btn steam">
+                    <i class="fa-brands fa-steam"></i>
+                    <span>
+                        <small data-lang="btn_get">Get it on</small>
+                        STEAM
+                    </span>
+                </a>
+                <a href="https://play.google.com/store/apps/details?id=com.yourname.yourgame" class="store-btn google">
+                    <i class="fa-brands fa-google-play"></i>
+                    <span>
+                        <small data-lang="btn_get">Get it on</small>
+                        Google Play
+                    </span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <section id="about" class="section">
+        <h2 class="section-title" data-lang="sec_trans_title">THE TRANSMISSION</h2>
+        <div class="grid-container">
+            <div class="card">
+                <h3 data-lang="feat_1_title">/// LORE</h3>
+                <p data-lang="feat_1_desc">You wake up in a facility that doesn't exist on any map. The walls shift when you aren't looking.</p>
+            </div>
+            <div class="card">
+                <h3 data-lang="feat_2_title">/// MECHANICS</h3>
+                <p data-lang="feat_2_desc">Hide in lockers, manage your sanity meter, and solve analog puzzles to unlock the security doors.</p>
+            </div>
+            <div class="card">
+                <h3 data-lang="feat_3_title">/// AUDIO</h3>
+                <p data-lang="feat_3_desc">Binaural 3D audio requires headphones. If you hear it breathing, it's already too late.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="gallery" class="section">
+        <h2 class="section-title" data-lang="sec_gallery_title">SURVEILLANCE FOOTAGE</h2>
+        <div class="gallery-grid">
+            <div class="gallery-item" style="background-image: url('https://placehold.co/600x400/1a1a1a/FFF?text=Corridor');"></div>
+            <div class="gallery-item" style="background-image: url('https://placehold.co/600x400/1a1a1a/FFF?text=Monster');"></div>
+            <div class="gallery-item" style="background-image: url('https://placehold.co/600x400/1a1a1a/FFF?text=Puzzle');"></div>
+            <div class="gallery-item" style="background-image: url('https://placehold.co/600x400/1a1a1a/FFF?text=Death');"></div>
+        </div>
+    </section>
+
+    <section id="download" class="section" style="text-align: center; border-top: 1px solid #222;">
+        <h2 class="section-title" data-lang="sec_down_title">START THE NIGHTMARE</h2>
+        <p style="margin-bottom: 30px;" data-lang="sec_down_sub">Choose your platform below.</p>
+        
+        <div class="store-buttons-container">
+            <a href="#" class="store-btn steam">
+                <i class="fa-brands fa-steam"></i>
+                <span><small data-lang="btn_get">Get it on</small>STEAM</span>
+            </a>
+            <a href="#" class="store-btn google">
+                <i class="fa-brands fa-google-play"></i>
+                <span><small data-lang="btn_get">Get it on</small>Google Play</span>
+            </a>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 YOUR STUDIO NAME. All rights reserved.</p>
+        <p style="opacity: 0.5; margin-top: 10px;" data-lang="footer_warn">Warning: This game contains flashing lights.</p>
+    </footer>
+
+    <script>
+        // --- TRANSLATION DATA ---
+        const translations = {
+            'en': {
+                nav_story: "Story",
+                nav_gallery: "Evidence",
+                nav_get: "Get Game",
+                hero_title: "DONT LOOK BACK",
+                hero_tagline: "The frequency is calling. Will you answer?",
+                btn_get: "Get it on",
+                sec_trans_title: "THE TRANSMISSION",
+                feat_1_title: "/// LORE",
+                feat_1_desc: "You wake up in a facility that doesn't exist on any map. The walls shift when you aren't looking.",
+                feat_2_title: "/// MECHANICS",
+                feat_2_desc: "Hide in lockers, manage your sanity meter, and solve analog puzzles to unlock the security doors.",
+                feat_3_title: "/// AUDIO",
+                feat_3_desc: "Binaural 3D audio requires headphones. If you hear it breathing, it's already too late.",
+                sec_gallery_title: "SURVEILLANCE FOOTAGE",
+                sec_down_title: "START THE NIGHTMARE",
+                sec_down_sub: "Choose your platform below.",
+                footer_warn: "Warning: This game contains flashing lights.",
+                toggle_btn: "[ SWITCH TO SPANISH ]"
+            },
+            'es': {
+                nav_story: "Historia",
+                nav_gallery: "Evidencia",
+                nav_get: "Jugar",
+                hero_title: "NO MIRES ATRÁS",
+                hero_tagline: "La frecuencia te está llamando. ¿Responderás?",
+                btn_get: "Disponible en",
+                sec_trans_title: "LA TRANSMISIÓN",
+                feat_1_title: "/// HISTORIA",
+                feat_1_desc: "Despiertas en una instalación que no figura en ningún mapa. Las paredes cambian cuando no miras.",
+                feat_2_title: "/// MECÁNICAS",
+                feat_2_desc: "Escóndete en casilleros, gestiona tu cordura y resuelve acertijos analógicos para abrir las puertas.",
+                feat_3_title: "/// AUDIO",
+                feat_3_desc: "El audio binaural 3D requiere audífonos. Si escuchas su respiración, ya es demasiado tarde.",
+                sec_gallery_title: "CÁMARAS DE SEGURIDAD",
+                sec_down_title: "COMIENZA LA PESADILLA",
+                sec_down_sub: "Elige tu plataforma abajo.",
+                footer_warn: "Advertencia: Este juego contiene luces intermitentes.",
+                toggle_btn: "[ CAMBIAR A INGLÉS ]"
+            }
+        };
+
+        let currentLang = 'en'; // Default
+
+        // --- UPDATE TEXT FUNCTION ---
+        function updateDOM() {
+            // Update all text elements
+            document.querySelectorAll('[data-lang]').forEach(el => {
+                const key = el.getAttribute('data-lang');
+                if (translations[currentLang][key]) {
+                    el.innerText = translations[currentLang][key];
+                }
+            });
+            // Update toggle button text
+            const btnText = currentLang === 'en' ? "[ EN / ES ]" : "[ ES / EN ]";
+            document.getElementById('langBtn').innerText = btnText;
+            
+            // Set HTML lang attribute
+            document.documentElement.lang = currentLang;
+        }
+
+        // --- TOGGLE BUTTON FUNCTION ---
+        function toggleLanguage() {
+            currentLang = (currentLang === 'en') ? 'es' : 'en';
+            updateDOM();
+        }
+
+        // --- INITIAL AUTO-DETECT ---
+        (function() {
+            const userLang = navigator.language || navigator.userLanguage; 
+            const langCode = userLang.split('-')[0];
+            
+            if (langCode === 'es') {
+                currentLang = 'es';
+            } else {
+                currentLang = 'en';
+            }
+            
+            updateDOM();
+        })();
+
+        // --- VISUAL GLITCH EFFECT ---
+        setInterval(() => {
+            if(Math.random() > 0.95) {
+                document.body.style.opacity = 0.8;
+                setTimeout(() => document.body.style.opacity = 1, 50);
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
