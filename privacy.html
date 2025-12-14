@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRIVACY PROTOCOL | PROJECT: UNKNOWN</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nosifer&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-red: #ff003c;
+            --dim-red: #590015;
+            --bg-black: #050505;
+            --text-mono: 'Share Tech Mono', monospace;
+            --text-horror: 'Nosifer', cursive;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-black);
+            color: #ccc;
+            font-family: var(--text-mono);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        /* --- VISUAL FX --- */
+        .scanlines {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.1));
+            background-size: 100% 4px; pointer-events: none; z-index: 1000;
+        }
+        .vignette {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle, rgba(0,0,0,0) 60%, rgba(0,0,0,0.9) 100%);
+            pointer-events: none; z-index: 999;
+        }
+
+        /* --- DOCUMENT CONTAINER --- */
+        .doc-container {
+            max-width: 800px;
+            margin: 0 auto;
+            border: 1px solid #333;
+            background: rgba(10, 10, 10, 0.95);
+            padding: 40px;
+            position: relative;
+            z-index: 10;
+            box-shadow: 0 0 20px rgba(0,0,0,0.8);
+        }
+
+        h1 {
+            font-family: var(--text-horror);
+            color: var(--primary-red);
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-align: center;
+            border-bottom: 2px solid var(--primary-red);
+            padding-bottom: 20px;
+        }
+
+        .meta-info {
+            text-align: center;
+            font-size: 0.8rem;
+            color: #666;
+            margin-bottom: 40px;
+            font-family: monospace;
+        }
+
+        h2 {
+            color: #fff;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            border-left: 3px solid var(--primary-red);
+            padding-left: 10px;
+            background: linear-gradient(90deg, rgba(255,0,60,0.1) 0%, rgba(0,0,0,0) 100%);
+        }
+
+        p, ul { margin-bottom: 20px; font-size: 0.95rem; }
+        ul { list-style: inside square; padding-left: 10px; }
+        li { margin-bottom: 5px; color: #aaa; }
+        
+        a { color: var(--primary-red); }
+
+        /* --- BACK BUTTON --- */
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #fff;
+            text-decoration: none;
+            border: 1px solid #444;
+            padding: 5px 15px;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+        }
+        .back-btn:hover { border-color: var(--primary-red); color: var(--primary-red); }
+
+        @media (max-width: 600px) {
+            .doc-container { padding: 20px; }
+            h1 { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="scanlines"></div>
+    <div class="vignette"></div>
+
+    <div class="doc-container">
+        <a href="index.html" class="back-btn" data-lang="btn_back">&lt; RETURN TO TERMINAL</a>
+        
+        <h1 data-lang="title">PRIVACY PROTOCOL</h1>
+        <div class="meta-info">
+            DOC_ID: 994-A // <span data-lang="last_update">LAST UPDATE: OCT 2025</span>
+        </div>
+
+        <div id="content">
+            </div>
+
+        <div style="margin-top: 50px; border-top: 1px solid #333; padding-top: 20px; font-size: 0.8rem; text-align: center; color: #555;">
+            <span data-lang="footer_contact">CONTACT: support@yourdomain.com</span>
+        </div>
+    </div>
+
+    <script>
+        const contentData = {
+            'en': `
+                <h2>1. INTRODUCTION</h2>
+                <p>This Privacy Policy explains how [YOUR STUDIO NAME] ("we", "us") collects, stores, and uses data in our game "PROJECT: UNKNOWN". By installing this application, you agree to the terms of this policy.</p>
+                
+                <h2>2. DATA COLLECTION</h2>
+                <p>We respect your privacy. This game operates primarily as an offline experience. However, we may use third-party services that collect technical data to improve the game's stability.</p>
+                <ul>
+                    <li><strong>Personal Data:</strong> We DO NOT knowingly collect names, emails, addresses, or phone numbers.</li>
+                    <li><strong>Device Data:</strong> Third-party services may collect device model, OS version, and IP address for analytics purposes.</li>
+                </ul>
+
+                <h2>3. THIRD PARTY SERVICES</h2>
+                <p>We use the following services which have their own privacy policies:</p>
+                <ul>
+                    <li><strong>Unity Analytics / Unity Ads:</strong> Used to identify bugs and game crashes.</li>
+                    <li><strong>Google Play Services:</strong> Used for achievements and cloud saves.</li>
+                </ul>
+
+                <h2>4. CHILDREN'S PRIVACY</h2>
+                <p>We do not knowingly collect or solicit personal data from anyone under the age of 13. If you are under 13, please do not use this application or send any data to us.</p>
+
+                <h2>5. CONTACT</h2>
+                <p>If you have questions regarding this protocol, please contact us at: <strong>[YOUR EMAIL HERE]</strong></p>
+            `,
+            'es': `
+                <h2>1. INTRODUCCIÓN</h2>
+                <p>Esta Política de Privacidad explica cómo [TU NOMBRE DE ESTUDIO] ("nosotros") recopila, almacena y utiliza datos en nuestro juego "PROJECT: UNKNOWN". Al instalar esta aplicación, aceptas los términos de esta política.</p>
+                
+                <h2>2. RECOPILACIÓN DE DATOS</h2>
+                <p>Respetamos tu privacidad. Este juego funciona principalmente como una experiencia offline. Sin embargo, podemos utilizar servicios de terceros que recopilan datos técnicos para mejorar la estabilidad del juego.</p>
+                <ul>
+                    <li><strong>Datos Personales:</strong> NO recopilamos conscientemente nombres, correos, direcciones ni números de teléfono.</li>
+                    <li><strong>Datos del Dispositivo:</strong> Los servicios de terceros pueden recopilar el modelo del dispositivo, versión del SO y dirección IP para fines analíticos.</li>
+                </ul>
+
+                <h2>3. SERVICIOS DE TERCEROS</h2>
+                <p>Utilizamos los siguientes servicios que tienen sus propias políticas de privacidad:</p>
+                <ul>
+                    <li><strong>Unity Analytics / Unity Ads:</strong> Utilizado para identificar errores y fallos del juego.</li>
+                    <li><strong>Google Play Services:</strong> Utilizado para logros y guardado en la nube.</li>
+                </ul>
+
+                <h2>4. PRIVACIDAD INFANTIL</h2>
+                <p>No recopilamos ni solicitamos conscientemente datos personales de menores de 13 años. Si tienes menos de 13 años, por favor no uses esta aplicación ni nos envíes datos.</p>
+
+                <h2>5. CONTACTO</h2>
+                <p>Si tienes preguntas sobre este protocolo, contáctanos en: <strong>[TU EMAIL AQUÍ]</strong></p>
+            `
+        };
+
+        const uiTranslations = {
+            'en': { title: "PRIVACY PROTOCOL", btn_back: "< RETURN TO TERMINAL", last_update: "LAST UPDATE: OCT 2025", footer_contact: "CONTACT: support@yourdomain.com" },
+            'es': { title: "PROTOCOLO DE PRIVACIDAD", btn_back: "< VOLVER A LA TERMINAL", last_update: "ACTUALIZADO: OCT 2025", footer_contact: "CONTACTO: support@yourdomain.com" }
+        };
+
+        function setLanguage(lang) {
+            // Default to English if lang not found
+            if (!contentData[lang]) lang = 'en';
+
+            // 1. Inject the large HTML body content
+            document.getElementById('content').innerHTML = contentData[lang];
+
+            // 2. Update UI elements (Title, buttons)
+            document.querySelectorAll('[data-lang]').forEach(el => {
+                const key = el.getAttribute('data-lang');
+                if (uiTranslations[lang][key]) {
+                    el.innerText = uiTranslations[lang][key];
+                }
+            });
+
+            document.documentElement.lang = lang;
+        }
+
+        // Auto-detect
+        (function() {
+            const userLang = navigator.language || navigator.userLanguage; 
+            const langCode = userLang.split('-')[0];
+            setLanguage(langCode);
+        })();
+    </script>
+</body>
+</html>
