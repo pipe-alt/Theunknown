@@ -44,6 +44,42 @@
             pointer-events: none; z-index: 999;
         }
 
+        /* --- LIGHTBOX (FULL SIZE IMAGE) --- */
+        .lightbox {
+            display: none; /* Hidden by default */
+            position: fixed;
+            z-index: 2000; /* On top of everything */
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(5px);
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            cursor: pointer; /* Click anywhere to close */
+        }
+        
+        .lightbox.active { display: flex; animation: fadeIn 0.3s ease; }
+
+        .lightbox img {
+            max-width: 90%;
+            max-height: 90vh;
+            border: 2px solid var(--primary-red);
+            box-shadow: 0 0 30px var(--dim-red);
+            cursor: default;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            color: #fff;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        .lightbox-close:hover { color: var(--primary-red); }
+
         /* --- NAVIGATION --- */
         nav {
             display: flex; justify-content: space-between; align-items: center;
@@ -53,16 +89,13 @@
         }
         
         .logo { font-family: var(--text-horror); color: var(--primary-red); font-size: 1.5rem; text-shadow: 2px 2px 0px #000; }
-        
         .nav-right { display: flex; align-items: center; gap: 30px; }
-        
         .nav-links a { 
             color: #fff; text-decoration: none; text-transform: uppercase; 
             font-size: 0.9rem; transition: color 0.3s; 
         }
         .nav-links a:hover { color: var(--primary-red); text-shadow: 0 0 8px var(--primary-red); }
 
-        /* Language Toggle Button Style */
         .lang-toggle {
             background: transparent; border: 1px solid #444; color: #fff;
             font-family: var(--text-mono); padding: 5px 10px; cursor: pointer;
@@ -103,8 +136,17 @@
 
         /* --- GALLERY --- */
         .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; }
-        .gallery-item { height: 200px; background-color: #222; background-size: cover; background-position: center; filter: grayscale(100%); transition: filter 0.3s; border: 1px solid #333; }
-        .gallery-item:hover { filter: grayscale(0%); border-color: var(--primary-red); }
+        .gallery-item { 
+            height: 200px; 
+            background-color: #222; 
+            background-size: cover; 
+            background-position: center; 
+            filter: grayscale(100%); 
+            transition: all 0.3s; 
+            border: 1px solid #333; 
+            cursor: pointer; /* STANDARD HAND CURSOR */
+        }
+        .gallery-item:hover { filter: grayscale(0%); border-color: var(--primary-red); transform: scale(1.02); }
 
         /* --- FOOTER --- */
         footer { padding: 40px; text-align: center; background: #000; border-top: 1px solid #222; font-size: 0.8rem; color: #666; }
@@ -120,12 +162,13 @@
             .lang-toggle { width: 100%; max-width: 200px; text-align: center; }
         }
 
-        /* --- ANIMATION KEYFRAMES --- */
+        /* --- ANIMATIONS --- */
         @keyframes scrollLines { 0% { background-position: 0 0; } 100% { background-position: 0 400px; } }
         @keyframes glitch {
             0% { text-shadow: 2px 0 0 red, -2px 0 0 blue; } 5% { text-shadow: 2px 0 0 red, -2px 0 0 blue; }
             10% { text-shadow: none; } 15% { text-shadow: -2px 0 0 red, 2px 0 0 blue; } 20% { text-shadow: none; } 100% { text-shadow: none; }
         }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body>
@@ -133,19 +176,20 @@
     <div class="scanlines"></div>
     <div class="vignette"></div>
 
+    <div id="lightbox" class="lightbox">
+        <div class="lightbox-close"><i class="fa-solid fa-xmark"></i></div>
+        <img id="lightbox-img" src="" alt="Full Scale Evidence">
+    </div>
+
     <nav>
-        <div class="logo">HOSTILE//SIGNAL</div>
-        
+        <div class="logo">DREADSHIFT</div>
         <div class="nav-right">
             <div class="nav-links">
                 <a href="#about" data-lang="nav_story">Story</a>
                 <a href="#gallery" data-lang="nav_gallery">Evidence</a>
                 <a href="#download" data-lang="nav_get">Get Game</a>
             </div>
-            
-            <button class="lang-toggle" onclick="toggleLanguage()" id="langBtn">
-                [ EN / ES ]
-            </button>
+            <button class="lang-toggle" onclick="toggleLanguage()" id="langBtn">[ EN / ES ]</button>
         </div>
     </nav>
 
@@ -155,19 +199,13 @@
             <p class="tagline" data-lang="hero_tagline">The frequency is calling. Will you answer?</p>
             
             <div class="store-buttons-container">
-                <a href="https://store.steampowered.com/app/YOUR_GAME_ID" class="store-btn steam">
+                <a href="#" class="store-btn steam">
                     <i class="fa-brands fa-steam"></i>
-                    <span>
-                        <small data-lang="btn_get">Get it on</small>
-                        STEAM
-                    </span>
+                    <span><small data-lang="btn_get">Get it on</small>STEAM</span>
                 </a>
-                <a href="https://play.google.com/store/apps/details?id=com.yourname.yourgame" class="store-btn google">
+                <a href="#" class="store-btn google">
                     <i class="fa-brands fa-google-play"></i>
-                    <span>
-                        <small data-lang="btn_get">Get it on</small>
-                        Google Play
-                    </span>
+                    <span><small data-lang="btn_get">Get it on</small>Google Play</span>
                 </a>
             </div>
         </div>
@@ -194,11 +232,14 @@
     <section id="gallery" class="section">
         <h2 class="section-title" data-lang="sec_gallery_title">SURVEILLANCE FOOTAGE</h2>
         <div class="gallery-grid">
-            <div class="gallery-item" style="background-image: url('oratory.jpeg');"></div>
-            <div class="gallery-item" style="background-image: url('bedroom.jpeg');"></div>
-            <div class="gallery-item" style="background-image: url('hallway');"></div>
-            <div class="gallery-item" style="background-image: url('library');"></div>
+            <div class="gallery-item" style="background-image: url('assets/corridor.jpg');"></div>
+            <div class="gallery-item" style="background-image: url('assets/monster.jpg');"></div>
+            <div class="gallery-item" style="background-image: url('assets/puzzle.jpg');"></div>
+            <div class="gallery-item" style="background-image: url('assets/death.jpg');"></div>
         </div>
+        <p style="text-align: center; margin-top: 10px; opacity: 0.5; font-size: 0.8rem;">
+            <span data-lang="click_zoom">Click to expand</span>
+        </p>
     </section>
 
     <section id="download" class="section" style="text-align: center; border-top: 1px solid #222;">
@@ -218,8 +259,10 @@
     </section>
 
     <footer>
-        <p>&copy; 2025 Fasmo. All rights reserved.</p>
-        <p><a href="privacy.html" style="color:#666; text-decoration:none; font-size:0.7rem;">Privacy Policy</a></p>
+        <p>&copy; 2025 FASMO. All rights reserved.</p>
+        <p style="margin-top: 5px;">
+            <a href="privacy.html" style="color: #666; text-decoration: none; font-size: 0.8rem;">Privacy Policy</a>
+        </p>
         <p style="opacity: 0.5; margin-top: 10px;" data-lang="footer_warn">Warning: This game contains flashing lights.</p>
     </footer>
 
@@ -241,10 +284,10 @@
                 feat_3_title: "/// AUDIO",
                 feat_3_desc: "Binaural 3D audio requires headphones. If you hear it breathing, it's already too late.",
                 sec_gallery_title: "SURVEILLANCE FOOTAGE",
+                click_zoom: "Click to expand",
                 sec_down_title: "START THE NIGHTMARE",
                 sec_down_sub: "Choose your platform below.",
-                footer_warn: "Warning: This game contains flashing lights.",
-                toggle_btn: "[ SWITCH TO SPANISH ]"
+                footer_warn: "Warning: This game contains flashing lights."
             },
             'es': {
                 nav_story: "Historia",
@@ -261,33 +304,28 @@
                 feat_3_title: "/// AUDIO",
                 feat_3_desc: "El audio binaural 3D requiere audífonos. Si escuchas su respiración, ya es demasiado tarde.",
                 sec_gallery_title: "CÁMARAS DE SEGURIDAD",
+                click_zoom: "Clic para ampliar",
                 sec_down_title: "COMIENZA LA PESADILLA",
                 sec_down_sub: "Elige tu plataforma abajo.",
-                footer_warn: "Advertencia: Este juego contiene luces intermitentes.",
-                toggle_btn: "[ CAMBIAR A INGLÉS ]"
+                footer_warn: "Advertencia: Este juego contiene luces intermitentes."
             }
         };
 
-        let currentLang = 'en'; // Default
+        let currentLang = 'en';
 
         // --- UPDATE TEXT FUNCTION ---
         function updateDOM() {
-            // Update all text elements
             document.querySelectorAll('[data-lang]').forEach(el => {
                 const key = el.getAttribute('data-lang');
                 if (translations[currentLang][key]) {
                     el.innerText = translations[currentLang][key];
                 }
             });
-            // Update toggle button text
             const btnText = currentLang === 'en' ? "[ EN / ES ]" : "[ ES / EN ]";
             document.getElementById('langBtn').innerText = btnText;
-            
-            // Set HTML lang attribute
             document.documentElement.lang = currentLang;
         }
 
-        // --- TOGGLE BUTTON FUNCTION ---
         function toggleLanguage() {
             currentLang = (currentLang === 'en') ? 'es' : 'en';
             updateDOM();
@@ -297,15 +335,37 @@
         (function() {
             const userLang = navigator.language || navigator.userLanguage; 
             const langCode = userLang.split('-')[0];
-            
-            if (langCode === 'es') {
-                currentLang = 'es';
-            } else {
-                currentLang = 'en';
-            }
-            
+            if (langCode === 'es') currentLang = 'es';
             updateDOM();
         })();
+
+        // --- LIGHTBOX LOGIC ---
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+
+        // Add click event to all gallery items
+        document.querySelectorAll('.gallery-item').forEach(item => {
+            item.addEventListener('click', () => {
+                // Get the background image URL from the clicked style
+                const style = window.getComputedStyle(item);
+                const bgImage = style.backgroundImage;
+                
+                // Extract the URL cleanly
+                if (bgImage && bgImage !== 'none') {
+                    // Removes 'url("' from start and '")' from end
+                    const src = bgImage.replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
+                    lightboxImg.src = src;
+                    lightbox.classList.add('active');
+                }
+            });
+        });
+
+        // Close lightbox when clicking background or close button
+        lightbox.addEventListener('click', (e) => {
+            if (e.target !== lightboxImg) {
+                lightbox.classList.remove('active');
+            }
+        });
 
         // --- VISUAL GLITCH EFFECT ---
         setInterval(() => {
@@ -316,8 +376,4 @@
         }, 1000);
     </script>
 </body>
-
 </html>
-
-
-
